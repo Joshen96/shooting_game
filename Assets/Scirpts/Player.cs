@@ -313,9 +313,11 @@ public class Player : MonoBehaviour
         GameManager.gamemanager.Playerdie_delebullet(); //  ÃÑ¾Ë»èÁ¦
         
 
-        if (life == 0)
+        if (life <= 0)
         {
+            life = 0;
             GameManager.gamemanager.GameOver();
+            
         }
         else
         {

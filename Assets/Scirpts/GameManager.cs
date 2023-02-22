@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // 
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
     public Image[] lifeImage;
     public GameObject gameOverset;
 
-
+    bool isReplay = false;
 
     // Start is called before the first frame update
     public static GameManager gamemanager = null;
@@ -45,7 +46,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        curEnemySpawnDelay += Time.deltaTime;
+        if(!isReplay)
+           curEnemySpawnDelay += Time.deltaTime;
         if (curEnemySpawnDelay > nextEnemySpawnDelay) //스폰시간되면 수행
         {
             SpawnEnemy();
@@ -126,5 +128,40 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    public void Replay()
+    {
+        /*
+        player.gameObject.SetActive(true);
+        isReplay = true;
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag("Enemy");
 
+        foreach (GameObject temp in temps)
+        {
+            Destroy(temp);
+        }
+        */
+        isReplay = true;
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject temp in temps)
+        {
+            Destroy(temp);
+        }
+        RespawnPlayer();
+
+        Player playLogic = player.GetComponent<Player>();
+        playLogic.life = 3;
+        UpdateLifeIcon(playLogic.life);
+        playLogic.score = 0;
+        gameOverset.SetActive(false);
+        Invoke(nameof(DelayEnemySpawn), 1f);
+
+    }
+    
+    void DelayEnemySpawn()
+    {
+        isReplay = false;
+    }
 }
