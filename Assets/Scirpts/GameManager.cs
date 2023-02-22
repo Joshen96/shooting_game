@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     // 적 스폰딜레이 위함 계속생성방지
     public float curEnemySpawnDelay;
     public float nextEnemySpawnDelay;
-
+    
     public GameObject player;
 
     public bool playerdie = false;
