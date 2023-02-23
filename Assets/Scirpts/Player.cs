@@ -7,8 +7,12 @@ public class Player : MonoBehaviour
     public float speed;
     public int life=3;
 
+    public int BoomCount = 0;
+
     public int score = 0;
-    public float power = 0f; //파워에따른 불릿타입결정
+    public float power = 0f; //파워에따른 불릿타입결정 
+
+    
 
     public float limitPower = 3f;
     public bool isTouchTop = false;
@@ -32,6 +36,7 @@ public class Player : MonoBehaviour
     {
         ani = GetComponent<Animator>();
         spriteRender = GetComponent<SpriteRenderer>();
+        GameManager.gamemanager.UpdateBoomIcon(BoomCount);
     }
     // Update is called once per frame
     void Update()
@@ -39,6 +44,7 @@ public class Player : MonoBehaviour
         Move();
         Fire();
         ReloadBullet();
+        Boomshot();
     }
 
     private void FixedUpdate()
@@ -96,7 +102,31 @@ public class Player : MonoBehaviour
         
         ani.SetInteger("Input", (int)h);
     }
+    void Boomshot()
+    { 
+        if (Input.GetButtonDown("Fire3"))
+        {
+            //Debug.LogError("필살기누름");
+            if (BoomCount == 0)
+                return;
+               
+            BoomCount--;
+            GameManager.gamemanager.Playerdie_delebullet(); //  총알삭제
+            GameManager.gamemanager.playerdie = false; 
+           
+            GameManager.gamemanager.Enemyallkill(); // 적삭제
 
+            GameManager.gamemanager.Booming();
+            
+            
+
+            GameManager.gamemanager.UpdateBoomIcon(BoomCount);
+
+            
+            score += 1000;
+
+        }
+    }
 
     void ReloadBullet()
     {
@@ -270,7 +300,7 @@ public class Player : MonoBehaviour
 
             isHit = true;
             Respawning = true;
-            Invoke(nameof(delay), 0.1f);  //0.1초후 애니메이션의die해제 
+            Invoke(nameof(Delay), 0.1f);  //0.1초후 애니메이션의die해제 
             
             
         }
@@ -300,9 +330,23 @@ public class Player : MonoBehaviour
                 Destroy(collision.gameObject);
             }
             }
+        if (collision.gameObject.tag == "Boom")
+        {
+            if (BoomCount == 2)
+            {
+                Destroy(collision.gameObject);
+            }
+            else
+            {
+                BoomCount++;
+                //GameManager.gamemanager.UpdateLifeIcon(life);
+                GameManager.gamemanager.UpdateBoomIcon(BoomCount);
+                Destroy(collision.gameObject);
+            }
+        }
 
     }
-    void delay()
+    void Delay()
     {
         ani.SetBool("die",false);
         Invoke(nameof(ReallyDie), 1f); //1초뒤에 죽기 

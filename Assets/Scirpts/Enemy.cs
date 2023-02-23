@@ -110,7 +110,7 @@ public class Enemy : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-    void OnHit(float Bulletpower)
+    public void OnHit(float Bulletpower)
     {
         health -= Bulletpower;
         if (health < 0 && isEnemyDie==false) //적 뒤짐
@@ -121,12 +121,15 @@ public class Enemy : MonoBehaviour
 
             //아이템드랍                                                                                                                                                                                                                              
 
-            int rand = Random.Range(0, 2);
+            int rand = Random.Range(0, 3);
             Debug.Log(rand);
             
            
             GameObject item = Instantiate(items[rand], transform.position, Quaternion.identity);
+            
             item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
+
+            
             
 
             Destroy(gameObject);

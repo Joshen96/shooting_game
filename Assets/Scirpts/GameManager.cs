@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public Transform[] spawnPoints;
     public GameObject[] EnemyPrefabs;
 
-   
+    public GameObject boomEfft;
 
     // 적 스폰딜레이 위함 계속생성방지
     public float curEnemySpawnDelay;
@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
 
     public Text scoreText;
     public Image[] lifeImage;
+    public Image[] BoomImage;
+
     public GameObject gameOverset;
 
     bool isReplay = false;
@@ -128,6 +130,56 @@ public class GameManager : MonoBehaviour
         }
 
     }
+    public void UpdateBoomIcon(int Boom)
+    {
+        for (int index = 0; index < BoomImage.Length; index++)
+        {
+            BoomImage[index].color = new Color(1, 1, 1, 0);
+        }
+        for (int index = 0; index < Boom; index++)
+        {
+            BoomImage[index].color = new Color(1, 1, 1, 1);
+        }
+
+    }
+    public void EnemyallDie()
+    {
+        
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject temp in temps)
+        {
+            
+          Destroy(temp);
+        }
+
+    }
+    public void Enemyallkill()
+    {
+
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (GameObject temp in temps)
+        {
+            temp.GetComponent<Enemy>().OnHit(15);
+            // Destroy(temp);
+        }
+
+    }
+    public void Booming()
+    {
+        boomEfft.gameObject.SetActive(true);
+        Invoke(nameof(Boomed), 0.5f);
+
+    }
+    public void Boomed()
+    {
+        boomEfft.gameObject.SetActive(false);
+
+    }
+    
     public void Replay()
     {
         /*
@@ -142,21 +194,19 @@ public class GameManager : MonoBehaviour
         }
         */
         isReplay = true;
-        GameObject[] temps;
-        temps = GameObject.FindGameObjectsWithTag("Enemy");
-
-        foreach (GameObject temp in temps)
-        {
-            Destroy(temp);
-        }
+        EnemyallDie();
         RespawnPlayer();
 
         Player playLogic = player.GetComponent<Player>();
         playLogic.life = 3;
+        playLogic.BoomCount = 0;
+
         UpdateLifeIcon(playLogic.life);
+        UpdateBoomIcon(playLogic.BoomCount);
+
         playLogic.score = 0;
         gameOverset.SetActive(false);
-        Invoke(nameof(DelayEnemySpawn), 1f);
+        Invoke(nameof(DelayEnemySpawn), 2f);
 
     }
     
