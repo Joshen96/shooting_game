@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
         }
         
     }
+   
     public void UpdateLifeIcon(int life)
     {
         for (int index = 0; index < lifeImage.Length; index++)

@@ -106,6 +106,7 @@ public class Player : MonoBehaviour
     { 
         if (Input.GetButtonDown("Fire3"))
         {
+          
             //Debug.LogError("필살기누름");
             if (BoomCount == 0)
                 return;
