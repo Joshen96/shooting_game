@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public string enemyName;
     public float speed;
     public float health;
     public int enemyscore;
@@ -18,16 +19,24 @@ public class Enemy : MonoBehaviour
     public GameObject[] items;
     
     SpriteRenderer spriteRender;
-    bool isEnemyDie;
+   public bool isEnemyDie;
+
+    Animator anim;
 
     Rigidbody2D rd;
 
     void Awake()
     {
         rd = GetComponent<Rigidbody2D>();
+        
         playerObj = GetComponent<GameObject>();
         
         spriteRender = GetComponent<SpriteRenderer>();
+
+        if(enemyName == "Boss")
+        {
+            anim = GetComponent<Animator>();
+        }
     }
 
     void Start()
@@ -35,13 +44,24 @@ public class Enemy : MonoBehaviour
         rd = GetComponent<Rigidbody2D>();
         
         spriteRender = GetComponent<SpriteRenderer>();
-         
+
+        if (enemyName == "Boss")
+        {
+            playerObj = GameObject.FindGameObjectWithTag("Player");
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (enemyName == "Boss")
+        {
+            
+            return;
+        }
+
+
         Fire();
         ReloadBullet();
     }
@@ -96,7 +116,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Border")
+        if (collision.gameObject.tag == "Border" && enemyName !="Boss")
         {
             Destroy(gameObject);
         }
@@ -113,32 +133,59 @@ public class Enemy : MonoBehaviour
     public void OnHit(float Bulletpower)
     {
         health -= Bulletpower;
+
+        if (enemyName == "Boss")
+        {
+            anim.SetTrigger("OnHit");
+        }
+        else
+        {
+            spriteRender.sprite = sprites[1];
+            Invoke("ReturnSprite", 0.1f);
+        }
+
+
         if (health < 0 && isEnemyDie==false) //적 뒤짐
         {
+            GameManager.gamemanager.kill_Enemy++;
+            GameManager.gamemanager.boss--;
+
             isEnemyDie = true;  //인보크 로인해 시간차감지로 아이템2개배출방지 플래그로 구현 이거나 
             Player playLogic = playerObj.GetComponent<Player>();
             playLogic.score += enemyscore;
 
             //아이템드랍                                                                                                                                                                                                                              
+            if (enemyName == "Boss")
+            {
+                Debug.Log("보스보상");
+                GameObject item = Instantiate(items[0], transform.position, Quaternion.identity);
+                item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
+                GameObject item2 = Instantiate(items[1], transform.position, Quaternion.identity);
+                item2.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
+                GameObject item3 = Instantiate(items[2], transform.position, Quaternion.identity);
+                item3.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
+                Destroy(gameObject);
+            }
+            else
+            {
+                int rand = Random.Range(0, 3);
+                Debug.Log(rand);
 
-            int rand = Random.Range(0, 3);
-            Debug.Log(rand);
-            
-           
-            GameObject item = Instantiate(items[rand], transform.position, Quaternion.identity);
-            
-            item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
 
-            
-            
+                GameObject item = Instantiate(items[rand], transform.position, Quaternion.identity);
 
+                item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
+
+
+
+
+                
+
+            }
             Destroy(gameObject);
-            
 
-            
         }
-        spriteRender.sprite = sprites[1];
-        Invoke("ReturnSprite", 0.1f);
+
     }
     void ReturnSprite()
     {

@@ -5,18 +5,16 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float power = 0f; //ÃÑ¾Ë µ©Áö
-
-   
-    void Start()
+    public bool isRotate;
+    private void Update()
     {
-        
+        if (isRotate)
+        {
+            transform.Rotate(Vector3.forward * 10);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

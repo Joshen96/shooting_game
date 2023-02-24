@@ -16,17 +16,26 @@ public class GameManager : MonoBehaviour
     // 적 스폰딜레이 위함 계속생성방지
     public float curEnemySpawnDelay;
     public float nextEnemySpawnDelay;
+
+    public int kill_Enemy = 0;
+
+   
+    public int boss = 10;
     
     public GameObject player;
 
     public bool playerdie = false;
 
     public Text scoreText;
+    public Text BossText;
+
     public Image[] lifeImage;
     public Image[] BoomImage;
 
     public GameObject gameOverset;
 
+
+    bool bosslife = false;
     bool isReplay = false;
 
     // Start is called before the first frame update
@@ -48,7 +57,9 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!isReplay)
+        Boss_start();
+
+        if (!isReplay)
            curEnemySpawnDelay += Time.deltaTime;
         if (curEnemySpawnDelay > nextEnemySpawnDelay) //스폰시간되면 수행
         {
@@ -62,7 +73,44 @@ public class GameManager : MonoBehaviour
 
         Player playLogic = player.GetComponent<Player>();
         scoreText.text=string.Format("{0:n0}",playLogic.score); // 000,000으로 fotmat사용
-    }  
+
+        BossText.text = string.Format("{0}",boss);
+    }
+
+    void Boss_start()
+    {
+        if (boss > 0)
+            return;
+
+        isReplay = true;
+        Debug.Log("보스등장");
+        EnemyallDie();
+
+        if (bosslife == false)
+        {
+            bosslife = true;
+            Invoke(nameof(SpawnBoss), 1.0f);
+        }
+    
+    }
+    void SpawnBoss()
+    {
+        
+        GameObject goBoss = Instantiate(EnemyPrefabs[3], spawnPoints[7].position, Quaternion.identity);
+        Enemy BossLogic = goBoss.GetComponent<Enemy>();
+        BossLogic.playerObj = player;
+      
+
+
+
+       
+
+    }
+    
+    void Scale()
+    {
+
+    }
     void SpawnEnemy()
     {
         int ranType = Random.Range(0, 3);
@@ -73,6 +121,7 @@ public class GameManager : MonoBehaviour
         enemyLogic.Move(ranPoint);
     }
 
+    
     
 
     public void GameOver()
@@ -151,11 +200,27 @@ public class GameManager : MonoBehaviour
 
         foreach (GameObject temp in temps)
         {
-            
+            if (temp.GetComponent<Enemy>().enemyName == "Boss")
+                return;
           Destroy(temp);
         }
 
     }
+    public void ItemallDie(string tag)
+    {
+
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag(tag);
+
+        foreach (GameObject temp in temps)
+        {
+
+            Destroy(temp);
+        }
+
+    }
+
+
     public void Enemyallkill()
     {
 
@@ -196,16 +261,22 @@ public class GameManager : MonoBehaviour
         */
         isReplay = true;
         EnemyallDie();
+        ItemallDie("Coin");
+        ItemallDie("Powerup");
+        ItemallDie("Boom");
+
         RespawnPlayer();
+
 
         Player playLogic = player.GetComponent<Player>();
         playLogic.life = 3;
         playLogic.BoomCount = 0;
-
+        playLogic.score = 0;
+        boss = 10;
         UpdateLifeIcon(playLogic.life);
         UpdateBoomIcon(playLogic.BoomCount);
 
-        playLogic.score = 0;
+       
         gameOverset.SetActive(false);
         Invoke(nameof(DelayEnemySpawn), 2f);
 
