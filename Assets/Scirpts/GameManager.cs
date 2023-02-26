@@ -28,12 +28,14 @@ public class GameManager : MonoBehaviour
 
     public Text scoreText;
     public Text BossText;
+    public Text OTotalScoreText;
+    public Text CTotalScoreText;
 
     public Image[] lifeImage;
     public Image[] BoomImage;
 
     public GameObject gameOverset;
-
+    public GameObject gameClearset;
 
     bool bosslife = false;
     bool isReplay = false;
@@ -57,6 +59,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (boss < 0)
+        {
+            boss = 0;
+        }
         Boss_start();
 
         if (!isReplay)
@@ -73,9 +79,19 @@ public class GameManager : MonoBehaviour
 
         Player playLogic = player.GetComponent<Player>();
         scoreText.text=string.Format("{0:n0}",playLogic.score); // 000,000으로 fotmat사용
-
+        OTotalScoreText.text = string.Format("{0:n0}", playLogic.score);
+        CTotalScoreText.text = string.Format("{0:n0}", playLogic.score);
         BossText.text = string.Format("{0}",boss);
     }
+
+    public void Bossdie_Gameclear()
+    {
+        delebullet();
+        gameClearset.SetActive(true); ;//게임오버 UI 활성화
+
+    }
+   
+        
 
     void Boss_start()
     {
@@ -155,7 +171,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<SpriteRenderer>().enabled = true;
         player.GetComponent<PolygonCollider2D>().enabled = true;
     }
-    public void Playerdie_delebullet()// 이때 애너미 총알 없앰
+    public void Playerdie_delebullet()// 플레이어죽으면 애너미 총알 없앰
     {
         playerdie = true;
         GameObject[] temps;
@@ -167,7 +183,20 @@ public class GameManager : MonoBehaviour
         }
         
     }
-   
+
+     void delebullet()// 총알 없앰
+    {
+        
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag("EnemyBullet");
+
+        foreach (GameObject temp in temps)
+        {
+            Destroy(temp);
+        }
+
+    }
+
     public void UpdateLifeIcon(int life)
     {
         for (int index = 0; index < lifeImage.Length; index++)
@@ -201,8 +230,11 @@ public class GameManager : MonoBehaviour
         foreach (GameObject temp in temps)
         {
             if (temp.GetComponent<Enemy>().enemyName == "Boss")
+            {
                 return;
-          Destroy(temp);
+            }
+            Destroy(temp);
+           
         }
 
     }
@@ -245,7 +277,18 @@ public class GameManager : MonoBehaviour
         boomEfft.gameObject.SetActive(false);
 
     }
-    
+    void bossdestory()
+    {
+        GameObject[] temps;
+        temps = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject temp in temps)
+        {
+            
+            Destroy(temp);
+
+        }
+
+    }
     public void Replay()
     {
         /*
@@ -259,15 +302,19 @@ public class GameManager : MonoBehaviour
             Destroy(temp);
         }
         */
+
+        Time.timeScale = 1f;
         isReplay = true;
+        bossdestory();
         EnemyallDie();
+        delebullet();
         ItemallDie("Coin");
         ItemallDie("Powerup");
         ItemallDie("Boom");
 
         RespawnPlayer();
 
-
+        bosslife = false;
         Player playLogic = player.GetComponent<Player>();
         playLogic.life = 3;
         playLogic.BoomCount = 0;
@@ -278,6 +325,7 @@ public class GameManager : MonoBehaviour
 
        
         gameOverset.SetActive(false);
+        gameClearset.SetActive(false);
         Invoke(nameof(DelayEnemySpawn), 2f);
 
     }

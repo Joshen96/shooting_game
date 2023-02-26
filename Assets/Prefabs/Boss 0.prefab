@@ -159,11 +159,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyName: Boss
   speed: 1.5
-  health: 10
+  health: 100
   enemyscore: 0
   curBulletDelay: 0
-  maxBulletDelay: 1
+  maxBulletDelay: 0.5
   bulletPrefabs:
+  - {fileID: 899403647338862629, guid: db40bd13a6ba5f94a8322fcd00708d09, type: 3}
   - {fileID: 899403647338862629, guid: 488443eb945cff14196454f2e393ea12, type: 3}
   sprites:
   - {fileID: -7945901444079236628, guid: 138040323294fd440a3a823e5d70ad01, type: 3}

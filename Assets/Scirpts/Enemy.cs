@@ -55,15 +55,24 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enemyName == "Boss")
-        {
-            
-            return;
-        }
+        
 
 
         Fire();
         ReloadBullet();
+    }
+
+    void BossPower()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject bulletObj = Instantiate(bulletPrefabs[i], transform.position, Quaternion.identity);
+            Rigidbody2D bulletrd = bulletObj.GetComponent<Rigidbody2D>();  // 총알의 리지드바디
+            Vector3 dirVec = playerObj.transform.position - transform.position; //플레이어와- 적기의 위치 적의입장에서
+
+            bulletrd.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+
+        }
     }
 
     void Power()
@@ -80,11 +89,14 @@ public class Enemy : MonoBehaviour
 
     void ReloadBullet()
     {
+    
         curBulletDelay += Time.deltaTime;
+
     }
     void Fire()
     {
-        
+
+      
 
         if (curBulletDelay > maxBulletDelay)
         {
@@ -92,10 +104,21 @@ public class Enemy : MonoBehaviour
             {
                 return;
             }
-            Power();
+            if (enemyName == "Boss")
+            {
+                BossPower();
+            }
+            else
+            {
+                Power();
 
+            }
+            
+            
             curBulletDelay = 0f;  //다시 0초 설정해줘야함
         }
+
+
     }
     public void Move(int nPoint)
     {
@@ -158,14 +181,23 @@ public class Enemy : MonoBehaviour
             if (enemyName == "Boss")
             {
                 Debug.Log("보스보상");
+
+                
                 GameObject item = Instantiate(items[0], transform.position, Quaternion.identity);
                 item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
-                GameObject item2 = Instantiate(items[1], transform.position, Quaternion.identity);
+                GameObject item2 = Instantiate(items[1], transform.position + Vector3.left, Quaternion.identity);
                 item2.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
-                GameObject item3 = Instantiate(items[2], transform.position, Quaternion.identity);
+                GameObject item3 = Instantiate(items[2], transform.position+ Vector3.right, Quaternion.identity); //  코인
                 item3.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
                 Destroy(gameObject);
+                
+
+
+                GameManager.gamemanager.Bossdie_Gameclear();
+                Time.timeScale = 0.1f;
             }
+
+
             else
             {
                 int rand = Random.Range(0, 3);
