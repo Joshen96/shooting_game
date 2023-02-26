@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
     public void Bossdie_Gameclear()
     {
         delebullet();
+
         gameClearset.SetActive(true); ;//게임오버 UI 활성화
 
     }
