@@ -115,18 +115,44 @@ public class ObjectManager : MonoBehaviour
         switch (Type)
         {
             case "EnemyL":
-                
+                targetpool = enemyL;
                 break;
             case "EnemyM":
+                targetpool = enemyM;
                 break;
             case "EnemyS":
+                targetpool = enemyS;
                 break;
             case "itemCoin":
+                targetpool = itemCoin;
                 break;
             case "itemPower":
+                targetpool = itemPower;
                 break;
             case "itemBoom":
+                targetpool = itemBoom;
                 break;
+            //case "BulletPlayerA " 
+            // targetpool = ;
+            //    braek;
+            //case " " 
+            // targetpool = ;
+            //    braek;
+            //case " " 
+            // targetpool = ;
+            //    braek;
+            //case " " 
+            // targetpool = ;
+            //    braek;
+            //case " ":
+            //    targetpool = ;
+            //    braek;
+
+
+
+
+
+
 
 
 
