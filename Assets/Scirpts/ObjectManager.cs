@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
+    
     public GameObject enemyLPrefab;
     public GameObject enemyMPrefab;
     public GameObject enemySPrefab;
@@ -18,7 +19,7 @@ public class ObjectManager : MonoBehaviour
     public GameObject bulletEnemyBPrefab;
 
 
-
+   
     GameObject[] enemyL;
     GameObject[] enemyM;
     GameObject[] enemyS;
@@ -36,6 +37,8 @@ public class ObjectManager : MonoBehaviour
 
     private void Awake()
     {
+
+        
         enemyL = new GameObject[10];
         enemyM = new GameObject[10];
         enemyS = new GameObject[10];
@@ -58,6 +61,7 @@ public class ObjectManager : MonoBehaviour
 
     void Generate()
     {
+         
         for (int index = 0; index < enemyL.Length; index++)
         {
             enemyL[index]=Instantiate(enemyLPrefab); // 오브젝트 매니저로 받은 프리펩 미리생성한 배열애 할당하는작업

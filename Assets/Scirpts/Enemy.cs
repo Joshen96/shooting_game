@@ -231,11 +231,12 @@ public class Enemy : MonoBehaviour
                     //Instantiate(items[0], transform.position, Quaternion.identity);
                 item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
                 GameObject item2 = objectManager.MakeObj(itemstring[1]);
-                item2.transform.position = transform.position; item2.transform.rotation = Quaternion.identity;
+                item2.transform.position = transform.position + Vector3.left;
+                item2.transform.rotation = Quaternion.identity;
                     //Instantiate(items[1], transform.position + Vector3.left, Quaternion.identity);
                 item2.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
                 GameObject item3 = objectManager.MakeObj(itemstring[2]);
-                item3.transform.position = transform.position;
+                item3.transform.position = transform.position + Vector3.right;
                 item3.transform.rotation = Quaternion.identity;
                     //Instantiate(items[2], transform.position+ Vector3.right, Quaternion.identity); //  ÄÚÀÎ
                 item3.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;

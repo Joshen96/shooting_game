@@ -154,13 +154,13 @@ public class Player : MonoBehaviour
                 break;
             case 2: //2발 발사 발사위치 Vector3.right*0.1f,+ Vector3.left * 0.1f으로 발사위치 조정
                 GameObject bulletR = objectManager.MakeObj(bulletString[0]);
-                bulletR.transform.position = transform.position;
+                bulletR.transform.position = transform.position+Vector3.right*0.1f;
                 bulletR.transform.rotation = Quaternion.identity;
                 //Instantiate(bulletPrefabs[0], transform.position+Vector3.right*0.1f, Quaternion.identity);
                 Rigidbody2D rdR = bulletR.GetComponent<Rigidbody2D>();
                 rdR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 GameObject bulletL = objectManager.MakeObj(bulletString[0]);
-                bulletL.transform.position = transform.position;
+                bulletL.transform.position = transform.position+Vector3.left*0.1f;
                 bulletL.transform.rotation = Quaternion.identity;
                 //Instantiate(bulletPrefabs[0], transform.position + Vector3.left * 0.1f, Quaternion.identity);
                 Rigidbody2D rdL = bulletL.GetComponent<Rigidbody2D>();
@@ -175,14 +175,14 @@ public class Player : MonoBehaviour
                 rd2.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
 
                 GameObject bullet2R = objectManager.MakeObj(bulletString[0]);
-                bullet2R.transform.position = transform.position;
+                bullet2R.transform.position = transform.position + Vector3.right * 0.25f;
                 bullet2R.transform.rotation = Quaternion.identity;
                 //Instantiate(bulletPrefabs[0], transform.position + Vector3.right * 0.25f, Quaternion.identity);
                 Rigidbody2D rd2R = bullet2R.GetComponent<Rigidbody2D>();
                 rd2R.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
 
                 GameObject bullet2L = objectManager.MakeObj(bulletString[0]);
-                bullet2L.transform.position = transform.position;
+                bullet2L.transform.position = transform.position + Vector3.left * 0.25f;
                 bullet2L.transform.rotation = Quaternion.identity;
                 //Instantiate(bulletPrefabs[0], transform.position + Vector3.left * 0.25f, Quaternion.identity);
                 Rigidbody2D rd2L = bullet2L.GetComponent<Rigidbody2D>();
