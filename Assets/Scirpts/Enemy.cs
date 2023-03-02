@@ -9,14 +9,22 @@ public class Enemy : MonoBehaviour
     public float health;
     public int enemyscore;
 
+    GameObject objectManagerObj;
+    ObjectManager objectManager;
+    
+
     public float curBulletDelay = 0f;
     public float maxBulletDelay = 1f;
     public GameObject[] bulletPrefabs;
-
+    
+    public string[] bulletString = {"BulletEnemyA","BulletEnemyB"};
     public Sprite[] sprites;
 
     public GameObject playerObj;
     public GameObject[] items;
+
+    public string[] itemstring = { "itemCoin", "itemPower","itemBoom" };
+
     
     SpriteRenderer spriteRender;
    public bool isEnemyDie;
@@ -37,8 +45,18 @@ public class Enemy : MonoBehaviour
         {
             anim = GetComponent<Animator>();
         }
-    }
+        objectManagerObj = GameObject.Find("ObjectManager");
+        objectManager = objectManagerObj.GetComponent<ObjectManager>();
 
+
+
+        
+    }
+    private void OnEnable()
+    {
+        health = 10f;
+        isEnemyDie = false; // 상태 복구
+    }
     void Start()
     {
         rd = GetComponent<Rigidbody2D>();
@@ -49,7 +67,7 @@ public class Enemy : MonoBehaviour
         {
             playerObj = GameObject.FindGameObjectWithTag("Player");
         }
-
+        
     }
 
     // Update is called once per frame
@@ -66,7 +84,12 @@ public class Enemy : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            GameObject bulletObj = Instantiate(bulletPrefabs[i], transform.position, Quaternion.identity);
+           
+            GameObject bulletObj = objectManager.MakeObj(bulletString[i]);
+            bulletObj.transform.position = transform.position;
+            bulletObj.transform.rotation = Quaternion.identity;
+
+                                   //Instantiate(bulletPrefabs[i], transform.position, Quaternion.identity);
             Rigidbody2D bulletrd = bulletObj.GetComponent<Rigidbody2D>();  // 총알의 리지드바디
             Vector3 dirVec = playerObj.transform.position - transform.position; //플레이어와- 적기의 위치 적의입장에서
 
@@ -78,7 +101,11 @@ public class Enemy : MonoBehaviour
     void Power()
     {
 
-        GameObject bulletObj = Instantiate(bulletPrefabs[0], transform.position, Quaternion.identity);
+        GameObject bulletObj = objectManager.MakeObj(bulletString[0]);
+        bulletObj.transform.position = transform.position;
+        bulletObj.transform.rotation = Quaternion.identity;
+
+            //Instantiate(bulletPrefabs[0], transform.position, Quaternion.identity);
         Rigidbody2D rd = bulletObj.GetComponent<Rigidbody2D>();  // 총알의 리지드바디
         
         Vector3 dirVec = playerObj.transform.position - transform.position; //플레이어와- 적기의 위치 적의입장에서
@@ -141,7 +168,9 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.tag == "Border" && enemyName !="Boss")
         {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
+
         }
 
         if(collision.gameObject.tag == "PlayerBullet")
@@ -150,7 +179,8 @@ public class Enemy : MonoBehaviour
             
             OnHit(bullet.power);
 
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
     public void OnHit(float Bulletpower)
@@ -182,15 +212,23 @@ public class Enemy : MonoBehaviour
             {
                 Debug.Log("보스보상");
 
-                
-                GameObject item = Instantiate(items[0], transform.position, Quaternion.identity);
+
+                GameObject item = objectManager.MakeObj(itemstring[0]);
+                item.transform.position = transform.position; 
+                item.transform.rotation = Quaternion.identity;
+                    //Instantiate(items[0], transform.position, Quaternion.identity);
                 item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
-                GameObject item2 = Instantiate(items[1], transform.position + Vector3.left, Quaternion.identity);
+                GameObject item2 = objectManager.MakeObj(itemstring[1]);
+                item2.transform.position = transform.position; item2.transform.rotation = Quaternion.identity;
+                    //Instantiate(items[1], transform.position + Vector3.left, Quaternion.identity);
                 item2.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
-                GameObject item3 = Instantiate(items[2], transform.position+ Vector3.right, Quaternion.identity); //  코인
+                GameObject item3 = objectManager.MakeObj(itemstring[2]);
+                item3.transform.position = transform.position;
+                item3.transform.rotation = Quaternion.identity;
+                    //Instantiate(items[2], transform.position+ Vector3.right, Quaternion.identity); //  코인
                 item3.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
-                Destroy(gameObject);
-                
+                //Destroy(gameObject);
+                gameObject.SetActive(false);
 
 
                 GameManager.gamemanager.Bossdie_Gameclear();
@@ -204,7 +242,11 @@ public class Enemy : MonoBehaviour
                 Debug.Log(rand);
 
 
-                GameObject item = Instantiate(items[rand], transform.position, Quaternion.identity);
+                GameObject item = objectManager.MakeObj(itemstring[rand]);
+                item.transform.position = transform.position;
+                item.transform.rotation = Quaternion.identity;
+
+                //Instantiate(items[rand], transform.position, Quaternion.identity);
 
                 item.GetComponent<Rigidbody2D>().velocity = Vector2.down * 1f;
 
@@ -214,8 +256,8 @@ public class Enemy : MonoBehaviour
                 
 
             }
-            Destroy(gameObject);
-
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
     }

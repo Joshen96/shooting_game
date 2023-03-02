@@ -49,6 +49,7 @@ public class BackGround : MonoBehaviour
             endIndex = (startIndexSave - 1 == -1) ? sprites.Length - 1 : startIndexSave - 1;
             
             */
+            
 
         }
     }

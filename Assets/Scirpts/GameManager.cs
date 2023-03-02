@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI; // 
@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     //생성 위치 포지션와 생성할 적 오브젝트
     public Transform[] spawnPoints;
     public GameObject[] EnemyPrefabs;
+
+    public string[] enemyOb;
 
     public GameObject boomEfft;
 
@@ -37,6 +39,8 @@ public class GameManager : MonoBehaviour
     public GameObject gameOverset;
     public GameObject gameClearset;
 
+    public ObjectManager objectManager;
+
     bool bosslife = false;
     bool isReplay = false;
 
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour
     public static GameManager gamemanager = null;
     private void Awake()
     {
+        
         if (gamemanager == null)
         {
             gamemanager = this;
@@ -51,9 +56,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         
+        enemyOb = new string [] { "EnemyL","EnemyM","EnemyS"};
+
     }
 
     // Update is called once per frame
@@ -132,7 +139,15 @@ public class GameManager : MonoBehaviour
     {
         int ranType = Random.Range(0, 3);
         int ranPoint = Random.Range(0, 7);
+
+        //Instantiate 사용 생성
+        /*
         GameObject goEnemy = Instantiate(EnemyPrefabs[ranType], spawnPoints[ranPoint].position, Quaternion.identity);
+        */
+        //오브젝트풀링 생성
+        GameObject goEnemy = objectManager.MakeObj(enemyOb[ranType]);
+        goEnemy.transform.position = spawnPoints[ranPoint].position;
+
         Enemy enemyLogic = goEnemy.GetComponent<Enemy>();
         enemyLogic.playerObj = player;
         enemyLogic.Move(ranPoint);
@@ -180,7 +195,8 @@ public class GameManager : MonoBehaviour
 
         foreach(GameObject temp in temps)
         {
-            Destroy(temp);
+            //   Destroy(temp); 
+            temp.SetActive(false);
         }
         
     }
@@ -193,7 +209,8 @@ public class GameManager : MonoBehaviour
 
         foreach (GameObject temp in temps)
         {
-            Destroy(temp);
+            //Destroy(temp);
+            temp.SetActive(false) ;
         }
 
     }
@@ -234,8 +251,8 @@ public class GameManager : MonoBehaviour
             {
                 return;
             }
-            Destroy(temp);
-           
+            //Destroy(temp);
+           temp.SetActive(false);
         }
 
     }
@@ -248,7 +265,8 @@ public class GameManager : MonoBehaviour
         foreach (GameObject temp in temps)
         {
 
-            Destroy(temp);
+            //Destroy(temp);
+            temp.SetActive(false);  
         }
 
     }
@@ -284,9 +302,9 @@ public class GameManager : MonoBehaviour
         temps = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject temp in temps)
         {
-            
-            Destroy(temp);
 
+            //Destroy(temp);
+            temp.SetActive(false);
         }
 
     }

@@ -12,6 +12,9 @@ public class Player : MonoBehaviour
     public int score = 0;
     public float power = 0f; //파워에따른 불릿타입결정 
 
+
+    public ObjectManager objectManager;
+
     
 
     public float limitPower = 3f;
@@ -25,7 +28,9 @@ public class Player : MonoBehaviour
     Animator ani;
 
     public GameObject[] bulletPrefabs; //총알 프리펩 오브젝트 
-   
+    public string[] bulletString = { "BulletPlayerA", "BulletPlayerB" };
+
+
     public float curBulletDelay = 0f;
     public float maxBulletDelay = 1f;
     
@@ -140,32 +145,50 @@ public class Player : MonoBehaviour
         switch (power)
         {
             case 1:
-                GameObject bullet = Instantiate(bulletPrefabs[0], transform.position, Quaternion.identity);
+                GameObject bullet = objectManager.MakeObj(bulletString[0]);
+                bullet.transform.position = transform.position;
+                bullet.transform.rotation = Quaternion.identity;
+                    //Instantiate(bulletPrefabs[0], transform.position, Quaternion.identity);
                 Rigidbody2D rd = bullet.GetComponent<Rigidbody2D>();
                 rd.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 2: //2발 발사 발사위치 Vector3.right*0.1f,+ Vector3.left * 0.1f으로 발사위치 조정
-                GameObject bulletR = Instantiate(bulletPrefabs[0], transform.position+Vector3.right*0.1f, Quaternion.identity);
+                GameObject bulletR = objectManager.MakeObj(bulletString[0]);
+                bulletR.transform.position = transform.position;
+                bulletR.transform.rotation = Quaternion.identity;
+                //Instantiate(bulletPrefabs[0], transform.position+Vector3.right*0.1f, Quaternion.identity);
                 Rigidbody2D rdR = bulletR.GetComponent<Rigidbody2D>();
                 rdR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
-                GameObject bulletL = Instantiate(bulletPrefabs[0], transform.position + Vector3.left * 0.1f, Quaternion.identity);
+                GameObject bulletL = objectManager.MakeObj(bulletString[0]);
+                bulletL.transform.position = transform.position;
+                bulletL.transform.rotation = Quaternion.identity;
+                //Instantiate(bulletPrefabs[0], transform.position + Vector3.left * 0.1f, Quaternion.identity);
                 Rigidbody2D rdL = bulletL.GetComponent<Rigidbody2D>();
                 rdL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 3:
-                GameObject bullet2 = Instantiate(bulletPrefabs[1], transform.position, Quaternion.identity);
+                GameObject bullet2 = objectManager.MakeObj(bulletString[1]);
+                bullet2.transform.position = transform.position;
+                bullet2.transform.rotation = Quaternion.identity;
+                //Instantiate(bulletPrefabs[1], transform.position, Quaternion.identity);
                 Rigidbody2D rd2 = bullet2.GetComponent<Rigidbody2D>();
                 rd2.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
 
-                GameObject bullet2R = Instantiate(bulletPrefabs[0], transform.position + Vector3.right * 0.25f, Quaternion.identity);
+                GameObject bullet2R = objectManager.MakeObj(bulletString[0]);
+                bullet2R.transform.position = transform.position;
+                bullet2R.transform.rotation = Quaternion.identity;
+                //Instantiate(bulletPrefabs[0], transform.position + Vector3.right * 0.25f, Quaternion.identity);
                 Rigidbody2D rd2R = bullet2R.GetComponent<Rigidbody2D>();
                 rd2R.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
 
-                GameObject bullet2L = Instantiate(bulletPrefabs[0], transform.position + Vector3.left * 0.25f, Quaternion.identity);
+                GameObject bullet2L = objectManager.MakeObj(bulletString[0]);
+                bullet2L.transform.position = transform.position;
+                bullet2L.transform.rotation = Quaternion.identity;
+                //Instantiate(bulletPrefabs[0], transform.position + Vector3.left * 0.25f, Quaternion.identity);
                 Rigidbody2D rd2L = bullet2L.GetComponent<Rigidbody2D>();
                 rd2L.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
-            case 4:
+            /*case 4:
                 GameObject bullet21 = Instantiate(bulletPrefabs[1], transform.position, Quaternion.identity);
                 Rigidbody2D rd21 = bullet21.GetComponent<Rigidbody2D>();
                 rd21.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
@@ -238,6 +261,7 @@ public class Player : MonoBehaviour
                 Rigidbody2D rd2L1122 = bullet2L1122.GetComponent<Rigidbody2D>();
                 rd2L1122.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
+            */
         }
         
     }
@@ -309,12 +333,13 @@ public class Player : MonoBehaviour
         {
             if (power == limitPower)
             {
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
+
             }
             else
             {
                 power++;
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
             }
             
         }
@@ -322,27 +347,27 @@ public class Player : MonoBehaviour
         {
             if (life == 3)
             {
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
             }
             else
             {
                 life++;
                 GameManager.gamemanager.UpdateLifeIcon(life);
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
             }
             }
         if (collision.gameObject.tag == "Boom")
         {
             if (BoomCount == 2)
             {
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
             }
             else
             {
                 BoomCount++;
                 //GameManager.gamemanager.UpdateLifeIcon(life);
                 GameManager.gamemanager.UpdateBoomIcon(BoomCount);
-                Destroy(collision.gameObject);
+                collision.gameObject.SetActive(false);
             }
         }
 

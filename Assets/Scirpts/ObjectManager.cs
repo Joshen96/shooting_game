@@ -132,29 +132,18 @@ public class ObjectManager : MonoBehaviour
             case "itemBoom":
                 targetpool = itemBoom;
                 break;
-            //case "BulletPlayerA " 
-            // targetpool = ;
-            //    braek;
-            //case " " 
-            // targetpool = ;
-            //    braek;
-            //case " " 
-            // targetpool = ;
-            //    braek;
-            //case " " 
-            // targetpool = ;
-            //    braek;
-            //case " ":
-            //    targetpool = ;
-            //    braek;
-
-
-
-
-
-
-
-
+            case "BulletPlayerA":
+                targetpool = bulletPlayerA;
+                break;
+            case "BulletPlayerB":
+                targetpool = bulletPlayerB;
+                break;
+            case "BulletEnemyA":
+                targetpool = bulletEnemyA;
+                break;
+            case "BulletEnemyB":
+                targetpool = bulletEnemyB;
+                break;
 
         }
 
