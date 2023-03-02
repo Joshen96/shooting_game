@@ -147,11 +147,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce126a1d82ecd12469be71861b5cea8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyName: 
+  enemyName: L
   speed: 1
   health: 10
   enemyscore: 500
-  objectManager: {fileID: 1045578483200923890, guid: c5ebd0f24586c854e966fb94a2392019, type: 3}
   curBulletDelay: 0
   maxBulletDelay: 2
   bulletPrefabs:

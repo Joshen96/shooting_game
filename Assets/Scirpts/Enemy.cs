@@ -52,9 +52,21 @@ public class Enemy : MonoBehaviour
 
         
     }
-    private void OnEnable()
+    void OnEnable()
     {
-        health = 10f;
+        switch (enemyName)
+        {
+            case "L":
+                health = 10;
+                break;
+            case "M":
+                health = 8;
+                break;
+            case "S":
+                health = 5;
+                break;
+
+        }
         isEnemyDie = false; // 상태 복구
     }
     void Start()

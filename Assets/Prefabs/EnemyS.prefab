@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce126a1d82ecd12469be71861b5cea8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyName: S
   speed: 5
   health: 5
   enemyscore: 50
@@ -144,6 +145,9 @@ MonoBehaviour:
   maxBulletDelay: 2
   bulletPrefabs:
   - {fileID: 899403647338862629, guid: db40bd13a6ba5f94a8322fcd00708d09, type: 3}
+  bulletString:
+  - BulletEnemyA
+  - BulletEnemyB
   sprites:
   - {fileID: 8414478535512612329, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: 4326287474489854147, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
@@ -152,6 +156,11 @@ MonoBehaviour:
   - {fileID: 8103249963209862986, guid: 3bd8eda2aec4aeb42a948f9671ba9760, type: 3}
   - {fileID: 3529950656173224302, guid: 877b3abe06a7fb84694f7ef916a0a05b, type: 3}
   - {fileID: 6138990547734221935, guid: 0e8bf9058d9977d4ba606bc126cffd85, type: 3}
+  itemstring:
+  - itemCoin
+  - itemPower
+  - itemBoom
+  isEnemyDie: 0
 --- !u!114 &-6681345482273816214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,3 +174,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   power: 0
+  isRotate: 0
